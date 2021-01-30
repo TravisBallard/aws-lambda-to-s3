@@ -1,0 +1,12 @@
+{
+  "name": "PDFFileUpload",
+  "version": "1.0.0",
+  "description": "Lambda to create a pre-signed url that will allow us to upload a PDF file to an S3 bucket",
+  "main": "handler.js",
+  "author": "Travis Ballard",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.830.0",
+    "uuidv4": "^6.2.6"
+  }
+}

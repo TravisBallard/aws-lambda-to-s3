@@ -1,0 +1,64 @@
+.upload-to-s3 {
+  background-color: white;
+  border: 1px solid white;
+  box-shadow: rgba(0,0,0,.2) 0 5px 15px;
+  width: 450px;
+
+  .title {
+    font-size: 1.2em;
+    font-family: sans-serif;
+    text-align: center;
+    background: linear-gradient(cornflowerblue, darkblue);
+    color: white;
+    padding: 10px;
+    text-shadow: black 1px 1px 3px;
+  }
+
+  .upload-form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+    .pdf-input {
+      border: 1px solid #dfdfdf;
+      padding: 5px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .notices {
+    width: 100%;
+    padding: 0 20px 20px;
+    line-height: 1.2;
+
+    > div {
+      width: 100%;
+      padding: 10px;
+      text-align: center;
+
+      p {
+        margin: 0;
+        text-shadow: #f0f8ff 1px -1px 0;
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+
+        a {
+          color: inherit;
+        }
+      }
+    }
+
+    .success {
+      color: green;
+      background-color: rgba(0,255,0,.3);
+      border: 1px solid rgba(0,255,0,.7);
+    }
+
+    .error {
+      color: red;
+      background-color: rgba(255,0,0,.3);
+      border: 1px solid rgba(255,0,0,.7);
+    }
+  }
+}
