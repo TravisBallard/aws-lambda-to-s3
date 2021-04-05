@@ -3,32 +3,57 @@ const S3 = new AWS.S3()
 
 const { uuid } = require('uuidv4')
 
-module.exports.PDFFileUpload = async (event, context, callback) => {
+const mimeTypeMap = {
+  'application/pdf': 'pdf',
+  'image/jpeg': 'jpg',
+  'image/pjpeg': 'jpg',
+  'image/x-citrix-jpeg': 'jpg',
+  'image/gif': 'gif',
+  'image/png': 'png',
+  'image/x-png': 'png',
+}
+
+const getExtensionFromMimeType = mimeType => {
+  const acceptedTypes = Object.keys(mimeTypeMap)
+  if (!acceptedTypes.includes(mimeType)) {
+    return false
+  }
+
+  return mimeTypeMap[mimeType]
+}
+
+module.exports.fileUpload = async (event, context, callback) => {
   try {
     const _uuid = uuid()
-    const filename = `${_uuid}.pdf`
+    const { mimeType } = event.queryStringParameters
+    const extension = getExtensionFromMimeType(mimeType)
+    const filename = `${_uuid}.${extension}`
 
     const params = {
-      Bucket: 'tbd-upload-bucket',
+      Bucket: 'els-lambda-2021',
       Key: filename,
-      ContentType: 'application/pdf',
+      ContentType: mimeType,
       CacheControl: 'max-age=31104000',
       ACL: 'public-read',
     }
 
     return new Promise((resolve, reject) => {
-      const uploadUrl = S3.getSignedUrl( 'putObject', params)
-      resolve({
-        statusCode: 200,
-        isBase64Encoded: false,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify({
-          uploadUrl: uploadUrl,
-          pdfFilename: filename,
+      if (!extension) {
+        reject('Invalid extension type')
+      } else {
+        const uploadUrl = S3.getSignedUrl('putObject', params)
+        resolve({
+          statusCode: 200,
+          isBase64Encoded: false,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+          body: JSON.stringify({
+            uploadUrl: uploadUrl,
+            pdfFilename: filename,
+          })
         })
-      })
+      }
     })
 
   } catch (e) {
